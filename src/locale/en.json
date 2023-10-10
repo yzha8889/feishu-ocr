@@ -1,0 +1,17 @@
+{
+  "attachment": {
+    "placeholder": "Select image column"
+  },
+  "image": {
+    "todo": "Number of unrecognized pictures",
+    "total": "Number of pictures"
+  },
+  "ocr": {
+    "notice": "View the OCR interface configuration document",
+    "placeholder": "Please fill in the OCR API first. For the configuration method, see the following description"
+  },
+  "start": "Start identifying",
+  "text": {
+    "placeholder": "Select text column"
+  }
+}

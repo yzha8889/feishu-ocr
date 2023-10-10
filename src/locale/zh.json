@@ -1,0 +1,17 @@
+{
+  "ocr": {
+    "placeholder": "请先填写OCR API，配置方式见下方说明",
+    "notice": "查看OCR接口配置文档"
+  },
+  "attachment": {
+    "placeholder": "选择图片列"
+  },
+  "text": {
+    "placeholder": "选择文本列"
+  },
+  "image": {
+    "total": "图片数",
+    "todo": "未识别图片数"
+  },
+  "start": "开始识别"
+}

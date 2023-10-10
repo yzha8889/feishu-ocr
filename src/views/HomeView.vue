@@ -2,17 +2,17 @@
 a-space(direction="vertical" fill :size="10")
   a-form.form(:model="form")
     a-space(direction="vertical" :size="10")
-      a-input(v-model="form.ocrAPI" placeholder="请先填写OCR API，配置方式见下方说明")
+      a-input(v-model="form.ocrAPI" :placeholder="$t('ocr.placeholder')")
         template(#prefix)
           icon-robot
       .info
         icon-info-circle
-        a(href="https://yellowduck.feishu.cn/docx/Q89SdbfZyoI50RxiwxlcTtP8nkb?from=from_copylink" target="_blank") 查看OCR接口配置文档
-      a-select(v-if="form.ocrAPI" v-model="form.attachment" placeholder="选择图片列")
+        a(href="https://yellowduck.feishu.cn/docx/Q89SdbfZyoI50RxiwxlcTtP8nkb?from=from_copylink" target="_blank") {{ $t('ocr.notice') }}
+      a-select(v-if="form.ocrAPI" v-model="form.attachment" :placeholder="$t('attachment.placeholder')")
         template(#prefix)
           icon-file-image
         a-option(v-for="table in attachmentField" :key="table.id" :value="table.id") {{ table.name }}
-      a-select(v-if="!!form.attachment" v-model="form.text" placeholder="选择文本列")
+      a-select(v-if="!!form.attachment" v-model="form.text" :placeholder="$t('text.placeholder')")
         template(#prefix)
           icon-file
         a-option(v-for="view in textField" :key="view.id" :value="view.id") {{ view.name }}
@@ -20,20 +20,20 @@ a-space(direction="vertical" fill :size="10")
     a-statistic(
       v-if="form.attachment"
       animation
-      title="图片数"
       show-group-separator
+      :title="$t('image.total')"
       :value="total.length")
     a-statistic(
       v-if="form.attachment && form.text"
       animation
-      title="未识别图片数"
       show-group-separator
+      :title="$t('image.todo')"
       :value="todo.length")
   a-button(
     type="primary"
     :disabled="!form.text"
     :loading="loading"
-    @click="run") 开始识别
+    @click="run") {{ $t('start') }}
 </template>
 <script setup>
   import { bitable, FieldType, IOpenSegmentType } from '@lark-base-open/js-sdk'
