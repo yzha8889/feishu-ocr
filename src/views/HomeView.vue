@@ -1,21 +1,22 @@
 <template lang='pug'>
 a-space(direction="vertical" fill :size="10")
-  a-form.form(:model="form")
-    a-space(direction="vertical" :size="10")
-      a-input(v-model="form.ocrAPI" :placeholder="$t('ocr.placeholder')")
-        template(#prefix)
-          icon-robot
-      .info
-        icon-info-circle
-        a(href="https://yellowduck.feishu.cn/docx/Q89SdbfZyoI50RxiwxlcTtP8nkb?from=from_copylink" target="_blank") {{ $t('ocr.notice') }}
-      a-select(v-if="form.ocrAPI" v-model="form.attachment" :placeholder="$t('attachment.placeholder')")
-        template(#prefix)
-          icon-file-image
-        a-option(v-for="table in attachmentField" :key="table.id" :value="table.id") {{ table.name }}
-      a-select(v-if="!!form.attachment" v-model="form.text" :placeholder="$t('text.placeholder')")
-        template(#prefix)
-          icon-file
-        a-option(v-for="view in textField" :key="view.id" :value="view.id") {{ view.name }}
+  a-spin(:loading="tableLoading" :tip="$t('table.loading')")
+    a-form.form(:model="form")
+      a-space(direction="vertical" :size="10")
+        a-input(v-model="form.ocrAPI" :placeholder="$t('ocr.placeholder')")
+          template(#prefix)
+            icon-robot
+        .info
+          icon-info-circle
+          a(href="https://yellowduck.feishu.cn/docx/Q89SdbfZyoI50RxiwxlcTtP8nkb?from=from_copylink" target="_blank") {{ $t('ocr.notice') }}
+        a-select(v-if="form.ocrAPI" v-model="form.attachment" :placeholder="$t('attachment.placeholder')")
+          template(#prefix)
+            icon-file-image
+          a-option(v-for="table in attachmentField" :key="table.id" :value="table.id") {{ table.name }}
+        a-select(v-if="!!form.attachment" v-model="form.text" :placeholder="$t('text.placeholder')")
+          template(#prefix)
+            icon-file
+          a-option(v-for="view in textField" :key="view.id" :value="view.id") {{ view.name }}
   a-space(size="large")
     a-statistic(
       v-if="form.attachment"
@@ -32,20 +33,23 @@ a-space(direction="vertical" fill :size="10")
   a-button(
     type="primary"
     :disabled="!form.text"
-    :loading="loading"
+    :loading="OCRLoading"
     @click="run") {{ $t('start') }}
 </template>
 <script setup>
   import { bitable, FieldType, IOpenSegmentType } from '@lark-base-open/js-sdk'
   import { useStorage } from '@vueuse/core'
-  import axios from 'axios'
+  import axios, { formToJSON } from 'axios'
   import { watch } from 'vue'
 
   // data
   let table = {}
   const pageSize = 5000
+
+  const OCRLoading = ref(false)
+  const tableLoading = ref(false)
+
   const records = ref([])
-  const loading = ref(false)
   const selection = ref({})
   const fieldMetaList = ref([])
 
@@ -89,17 +93,17 @@ a-space(direction="vertical" fill :size="10")
   })
 
   watch(
-    () => loading.value && !todo.value.length,
+    () => OCRLoading.value && !todo.value.length,
     async value => {
       if (value) {
-        loading.value = false
+        OCRLoading.value = false
       }
     }
   )
 
   const run = async () => {
     await fetchRecords()
-    loading.value = true
+    OCRLoading.value = true
     todo.value.forEach(async record => {
       let attachmentToken = record.fields[form.attachment][0].token
       let attachmentURL = await table.getAttachmentUrl(attachmentToken)
@@ -113,14 +117,27 @@ a-space(direction="vertical" fill :size="10")
     })
   }
   // lifecycle
-  onMounted(async () => {
+  const reloadTable = async () => {
+    form.attachment = ''
+    form.text = ''
+
+    tableLoading.value = true
     selection.value = await bitable.base.getSelection()
     table = await bitable.base.getTableById(selection.value.tableId)
+
     table.onRecordModify((recordId, filedIds) => {
       fetchRecords()
     })
     const view = await table.getViewById(selection.value.viewId)
     fieldMetaList.value = await view.getFieldMetaList()
+    tableLoading.value = false
+  }
+
+  onMounted(async () => {
+    bitable.base.onSelectionChange(() => {
+      reloadTable()
+    })
+    reloadTable()
   })
 </script>
 <style lang='stylus' rel='stylesheet/stylus' scoped>
@@ -139,5 +156,9 @@ a-space(direction="vertical" fill :size="10")
     a {
       color: var(--color-text);
     }
+  }
+
+  :deep(.arco-spin) {
+    width: 100%;
   }
 </style>
