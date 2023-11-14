@@ -2,6 +2,13 @@
   "attachment": {
     "placeholder": "Select image column"
   },
+  "check": "check API",
+  "checking": "checking",
+  "error": {
+    "inputAPI": "Please fill in the OCR API",
+    "ocrAPI": "OCR API doesn't seem to be working properly",
+    "wrongArrachmentURL": "Unable to get image address"
+  },
   "image": {
     "todo": "Number of unrecognized pictures",
     "total": "Number of pictures"
@@ -11,6 +18,12 @@
     "placeholder": "Please fill in the OCR API first. For the configuration method, see the following description"
   },
   "start": "Start identifying",
+  "success": {
+    "ocrAPI": "OCR API test passed!"
+  },
+  "table": {
+    "loading": "Data table is loading..."
+  },
   "text": {
     "placeholder": "Select text column"
   }

@@ -1,20 +1,30 @@
 {
-  "ocr": {
-    "placeholder": "请先填写OCR API，配置方式见下方说明",
-    "notice": "查看OCR接口配置文档"
-  },
   "attachment": {
     "placeholder": "选择图片列"
   },
-  "text": {
-    "placeholder": "选择文本列"
+  "check": "检查接口",
+  "checking": "检测中",
+  "error": {
+    "inputAPI": "请填写OCR API",
+    "ocrAPI": "OCR API好像没有正常工作",
+    "wrongArrachmentURL": "无法获取图片地址"
   },
   "image": {
-    "total": "图片数",
-    "todo": "未识别图片数"
+    "todo": "未识别图片数",
+    "total": "图片数"
   },
-  "start": "开始识别",
   "table": {
     "loading": "数据表加载中..."
+  },
+  "ocr": {
+    "notice": "查看OCR接口配置文档",
+    "placeholder": "请先填写OCR API，配置方式见下方说明"
+  },
+  "start": "开始识别",
+  "success": {
+    "ocrAPI": "OCR API测试通过！"
+  },
+  "text": {
+    "placeholder": "选择文本列"
   }
 }
