@@ -191,6 +191,8 @@ a-space(direction="vertical" fill :size="10")
 
   :deep(.arco-spin) {
     width: 100%;
+  }
+
   .check {
     margin-left: 5px;
   }
