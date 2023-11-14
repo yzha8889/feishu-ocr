@@ -1,1 +1,7 @@
-# 飞书多维表格OCR插件
+# feishu Bitable ORC plugin
+
+## Changelog
+
+### v1.0.1
+
+- add check button
