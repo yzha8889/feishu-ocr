@@ -1,10 +1,13 @@
 const FSDK = require('feishu-sdk');
-const u2b = require('image-to-base64');
 
 module.exports = async (req, res) => {
   try {
     const FAPI = await FSDK(process.env.APP_ID, process.env.APP_SECRET);
-    const base64 = await u2b(req.body.url);
+    
+    // 获取上传的图片 base64 数据
+    const base64 = req.body.image.replace(/^data:image\/\w+;base64,/, '');
+    
+    // 调用飞书 OCR API
     const text = await FAPI.ai.ocr(base64);
     
     res.json({ text });
